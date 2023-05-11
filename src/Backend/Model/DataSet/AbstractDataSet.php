@@ -1,0 +1,88 @@
+<?php
+/*
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2019, TASoft Applications
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *  Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ *  Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ *  Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+namespace Ikarus\SPS\Statistics\Backend\Model\DataSet;
+
+use Ikarus\SPS\Statistics\Backend\Model\StatisticsDescriptionInterface;
+
+abstract class AbstractDataSet implements DataSetInterface
+{
+	private $statisticsDescription;
+	private $name;
+	private $unit;
+
+	/** @var DataSetValueGeneratorInterface */
+	protected $generator;
+
+	/**
+	 * @param $name
+	 * @param $unit
+	 * @param bool $visible
+	 */
+	public function __construct($name, $unit = NULL)
+	{
+		$this->name = $name;
+		$this->unit = $unit;
+	}
+
+	public function getStatisticDescription(): ?StatisticsDescriptionInterface
+	{
+		return $this->statisticsDescription;
+	}
+
+	public function setStatisticDescription(?StatisticsDescriptionInterface $description)
+	{
+		$this->statisticsDescription = $description;
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
+	}
+
+	public function getUnit(): ?UnitInterface
+	{
+		return $this->unit;
+	}
+
+	public function getDataSetValueGenerator(): DataSetValueGeneratorInterface
+	{
+		if(!$this->generator) {
+			$this->generator = $this->makeGenerator();
+		}
+		return $this->generator;
+	}
+
+	abstract protected function makeGenerator(): DataSetValueGeneratorInterface;
+}
