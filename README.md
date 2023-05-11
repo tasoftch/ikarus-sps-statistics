@@ -1,2 +1,3 @@
-# php-dependency-injection
-PHP Dependency Injection library in collaboration with service manager
+# Ikarus SPS Statistics
+
+The statistics package provides a mechanism to log statistics frequently or by pushing.
